@@ -9,8 +9,11 @@
 ![图片1](img/Step_1.png)
 ![图片2](img/Step_2.png)
 
-3.去Action板块直接Run，测试是否通过
+3.继续在设置中，修改选项(为了写入日志)
 ![图片3](img/Step_3.png)
+
+3.去Action板块直接Run，测试是否通过
+![图片4](img/Step_4.png)
 
 4.查看日志log.json签到内容，如果已经签到过不再写入
 
