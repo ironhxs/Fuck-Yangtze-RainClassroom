@@ -25,6 +25,8 @@ jobs:
 
       - name: Run script
         run: python main.py
+        env:
+            SESSION: ${{ secrets.SESSION }}
 
       - name: Commit and push changes
         run: |
@@ -33,5 +35,3 @@ jobs:
           git add .
           git commit -m "Auto update logs" || echo "No changes to commit"
           git push origin $(git rev-parse --abbrev-ref HEAD)
-  env:
-    SESSION: ${{ secrets.SESSION }}
