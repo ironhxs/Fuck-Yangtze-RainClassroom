@@ -124,5 +124,14 @@
         "student": "赵思涵",
         "status": "签到成功",
         "url": "https://changjiang.yuketang.cn/m/v2/lesson/student/1394074380086809216"
+    },
+    {
+        "id": 1394683565044176128,
+        "title": "ch5--树",
+        "name": "数据结构",
+        "time": "2025-04-08 07:13:33",
+        "student": "赵思涵",
+        "status": "签到成功",
+        "url": "https://changjiang.yuketang.cn/m/v2/lesson/student/1394683565044176128"
     }
 ]
