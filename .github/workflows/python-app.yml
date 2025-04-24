@@ -27,6 +27,12 @@ jobs:
         run: python main.py
         env:
             SESSION: ${{ secrets.SESSION }}
+            EMAIL_USER: ${{ secrets.EMAIL_USER }}
+            EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+            TO_EMAIL: ${{ secrets.TO_EMAIL }}
+            EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
+            EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
+
 
       - name: Commit and push changes
         run: |

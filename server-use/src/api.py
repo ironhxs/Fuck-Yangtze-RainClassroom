@@ -14,7 +14,9 @@ api = {
     # 个人信息
     "user_info" : "v2/api/web/userinfo",
     # 如果是课堂 可以通过此URL进入课堂查看PPT 尾接courseID
-    "class_info" : "m/v2/lesson/student/"
+    "class_info" : "m/v2/lesson/student/",
+    # 获取正在处于上课的列表
+    "get_listening": "api/v3/classroom/on-lesson-upcoming-exam"
 }
 
 log_file_name = "log.json"
@@ -31,8 +33,21 @@ def read(filename):
 list = read(config_file_name)
 
 sessionId = re.search(r'\"(.*?)\"', list[0]).group(1)
-time = int(re.search(r'\"(.*?)\"', list[1]).group(1))
+email_user = str(re.search(r'\"(.*?)\"', list[1]).group(1))
+email_pass = str(re.search(r'\"(.*?)\"', list[2]).group(1))
+to_email = str(re.search(r'\"(.*?)\"', list[3]).group(1))
+email_host = str(re.search(r'\"(.*?)\"', list[4]).group(1))
+email_port = int(re.search(r'\"(.*?)\"', list[5]).group(1))
 
 headers = {
     "Cookie": "sessionid=" + sessionId
 }
+
+question_type = {
+    1 : "单选题",
+    2 : "",
+    3 : "",
+    4 : "",
+
+}
+

@@ -1,2 +1,6 @@
 SESSIONID = ""
-TIME = "5"
+EMAIL_USER = "XXXXXXXXXX@qq.com"
+EMAIL_PASS = ""
+TO_EMAIL = ""
+EMAIL_HOST = "smtp.qq.com"
+EMAIL_PORT = "465"
