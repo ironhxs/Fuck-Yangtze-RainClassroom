@@ -1,27 +1,16 @@
-from datetime import datetime
-
 import requests
 
-from api import url, api, headers, log_file_name,question_type
-from file import write_log, read_log
-from notice import email_notice
-
-
-# 获取用户名字 用于核实
-def get_user_info():
-    response = requests.get(url + api["user_info"], headers=headers)
-    if response.status_code == 200:
-        response_data = response.json()
-        # 提取 `data` 列表中的第一个元素信息
-        if "data" in response_data and response_data["data"]:
-            return response_data["data"][0].get("name")
-    else:
-        return "错误"
+from function.listening_socket import start_all_sockets
+from function.user import get_user_name
+from config import host, api, headers, log_file_name
+from util.file import write_log, read_log
+from util.notice import email_notice
+from util.timestamp import get_now
 
 
 # 获取正在进行的
 def get_listening():
-    response = requests.get(url + api["get_listening"], headers=headers)
+    response = requests.get(host + api["get_listening"], headers=headers)
     if response.status_code == 200:
         response_data = response.json()
         return response_data["data"]
@@ -29,14 +18,13 @@ def get_listening():
         return None
 
 
-def get_now():
-    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-
-# 获取正在进行的课堂并且签到、写日志
+# 获取正在进行的课堂并且签到、写日志 新的签到方法
 def get_listening_classes_and_sign():
     response = get_listening()
-    name = get_user_info()
+    name = get_user_name()
+
+    # 短期存储查看PPT用的JWT、lessonId等信息
+    on_lesson_list = []
 
     if response is None:
         return None
@@ -50,14 +38,26 @@ def get_listening_classes_and_sign():
             for item in classes:
                 course_name = item["courseName"]
                 lesson_id = item["lessonId"]
-                response_sign = sign(lesson_id)
+                response_sign = check_in_on_listening(lesson_id)
 
                 if response_sign.status_code == 200:
                     status = "签到成功"
 
                     print(course_name, status)
+                    data = response_sign.json()["data"]
+                    socket_jwt = data["lessonToken"]
 
-                    email_notice(subject="雨课堂课程签到成功", content=course_name)
+                    jwt = response_sign.headers["Set-Auth"]
+                    # print(jwt)
+                    identity_id = data["identityId"]
+
+                    on_lesson_list.append({
+                        "ppt_jwt": jwt,
+                        "socket_jwt" : socket_jwt,
+                        "lesson_id": lesson_id,
+                        "identity_id": identity_id,
+                        "course_name": course_name
+                    })
 
                     # 将签到信息写入文件顶部
                     new_log = {
@@ -72,14 +72,15 @@ def get_listening_classes_and_sign():
                     write_log(log_file_name, new_log)
                 else:
                     print("失败", response_sign.status_code, response_sign.text)
+            # 所有签到完成后，进行死循环巡查，检查是否出现答题
+            start_all_sockets(on_lesson_list)
 
-            # 发邮件提醒
-            # TODO
-            return
+            # for item in on_lesson_list:
+            #     start_socket_ppt(ppt_jwt=item["ppt_jwt"],socket_jwt=item["socket_jwt"], lesson_id=item["lesson_id"], identity_id=item["identity_id"])
 
 
 # 获取正在进行的考试
-def get_exam():
+def check_exam():
     response = get_listening()
     if response is None:
         return None
@@ -97,19 +98,19 @@ def get_exam():
 
 
 # 传入lessonId 签到
-def sign(lesson_id):
+def check_in_on_listening(lesson_id):
     sign_data = {
-        "source": 23,
+        "source": 5,
         "lessonId": str(lesson_id),
         "joinIfNotIn": True
     }
 
-    response_sign = requests.post(url + api["sign_in_class"], headers=headers, json=sign_data)
+    response_sign = requests.post(host + api["sign_in_class"], headers=headers, json=sign_data)
     return response_sign
 
 
 # 是否已经签过（写入日志）
-def has_signed(lesson_id):
+def has_in_checked(lesson_id):
     logs = read_log(log_file_name)
     if logs and logs[-1]["id"] == lesson_id:
         print("已签过")
@@ -118,8 +119,8 @@ def has_signed(lesson_id):
         return False
 
 
-# 收到的课程列表前check_num个全部进行签到、写日志
-def check_and_sign(check_num=1):
+# 收到的课程列表前check_num个全部进行签到、写日志 旧的签到方法 弃用
+def check_in_on_latest(check_num=1):
     data = {
         "size": check_num,
         "type": [],
@@ -127,9 +128,9 @@ def check_and_sign(check_num=1):
         "endTime": None
     }
 
-    name = get_user_info()
+    name = get_user_name()
     # 检查收到消息
-    response = requests.post(url + api["get_received"], headers=headers, json=data)
+    response = requests.post(host + api["get_received"], headers=headers, json=data)
     if response.status_code == 200:
         response_data = response.json()
         # 提取 `data` 列表中的第一个元素信息
@@ -139,13 +140,13 @@ def check_and_sign(check_num=1):
             courseware_title = courseware_info.get("coursewareTitle")
             course_name = courseware_info.get("courseName")
 
-            if has_signed(courseware_id):
+            if has_in_checked(courseware_id):
                 return
 
             print("标题:", courseware_title)
             print("名称:", course_name)
 
-            response_sign = sign(courseware_id)
+            response_sign = check_in_on_listening(courseware_id)
 
             if response_sign.status_code == 200:
                 status = "签到成功"
@@ -169,23 +170,4 @@ def check_and_sign(check_num=1):
             print("没有找到数据")
     else:
         print("请求失败:", response.status_code, response.text)
-
-
-# 获取PPT的内容 包括题目
-def get_ppt_content():
-    return None
-
-
-# 检查是否有题目出现
-
-# 解析出题目
-def parse_question(slide):
-    question = slide["problem"]
-    id = question["problemId"]
-    type = question_type[question["problemType"]]
-    limit_time_second = question["limit"]
-    score = question["score"]
-    content = question["body"]
-    options = question["options"]
-
 

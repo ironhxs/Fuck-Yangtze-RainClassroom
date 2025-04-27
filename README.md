@@ -1,4 +1,4 @@
-# 长江雨课堂定时签到
+# 长江雨课堂定时签到+听课答题
 **🌟 雨课堂、荷花、黄河等应该就HOST和API不同吧，可以自己试试，改下API应该就行?**
 
 **⚠️ 注意 使用本方式签到再教师端显示为“通过APP正在上课提示进入课堂”，扫码进入的则显示为“通过二维码进入课堂”；不过一般老师搞不明白也没理由质疑，反正两种方式考勤分都是满的**
@@ -34,23 +34,33 @@
 
 4.查看日志log.json签到内容，如果已经签到过不再写入
 
+5.【新增】答题：增加secret，AI_KEY，获取方式在末尾
+
+6.【新增】email提醒：增加如下secret
+```
+EMAIL_USER = "发送方 XXXXXXXXXX@qq.com"
+EMAIL_PASS = "授权码 前往QQ邮箱官网获取"
+TO_EMAIL = "收件方"
+EMAIL_HOST = "smtp.qq.com"
+EMAIL_PORT = "465"
+```
 ## 方法2 部署在服务器
 ### 🌟 说明
 
 **⚠️ 注意 注意设置好运行自动化时的Cookie过期的提醒**
 
 ### 🚀 开始配置
-1.下载**server-use**文件夹
+1.进入config.py，修改isLocal变量为True
 
-2.打开config.txt,填写抓包获取的SESSIONID
+2.打开config.txt,填写config.ini
 
 3.安装依赖
 ```bash
-pip install requests
+pip install -r requirements.txt
 ```
-3.定时运行main.py(推荐使用宝塔面板定时任务，具体教程自行搜索)
+3.定时运行start.py(推荐使用宝塔面板定时任务，具体教程自行搜索)
 ```python
-python main.py
+python start.py
 ```
 
 4.查看日志log.json签到内容，如果已经签到过不再写入
@@ -64,3 +74,6 @@ python main.py
 ![图片4](server-use/screenShot/4.png)
 
 复制粘贴得到的id到config.txt，并保存即可
+
+## [获取AI_KEY](https://api.chatanywhere.org/v1/oauth/free/render)
+

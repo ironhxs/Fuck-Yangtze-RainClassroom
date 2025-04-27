@@ -21,7 +21,7 @@ jobs:
           python-version: '3.x'
 
       - name: Install dependencies
-        run: pip install requests
+        run: pip install -r requirements.txt
 
       - name: Run script
         run: python main.py
@@ -32,6 +32,7 @@ jobs:
             TO_EMAIL: ${{ secrets.TO_EMAIL }}
             EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
             EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
+            AI_KEY: ${{ secrets.AI_KEY }}
 
 
       - name: Commit and push changes
