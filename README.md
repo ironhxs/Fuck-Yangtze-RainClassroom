@@ -34,16 +34,8 @@
 
 4.查看日志log.json签到内容，如果已经签到过不再写入
 
-5.【新增】答题：增加secret，AI_KEY，获取方式在末尾
+5.【新增】答题：增加secret，AI_KEY和ENNCY_KEY，获取方式在末尾
 
-6.【新增】email提醒：增加如下secret
-```
-EMAIL_USER = "发送方 XXXXXXXXXX@qq.com"
-EMAIL_PASS = "授权码 前往QQ邮箱官网获取"
-TO_EMAIL = "收件方"
-EMAIL_HOST = "smtp.qq.com"
-EMAIL_PORT = "465"
-```
 ## 方法2 部署在服务器
 ### 🌟 说明
 
@@ -75,5 +67,6 @@ python start.py
 
 复制粘贴得到的id到config.txt，并保存即可
 
-## [获取AI_KEY](https://api.chatanywhere.org/v1/oauth/free/render)
+## [获取AI_KEY(AI 用于解题或辅助题库搜题规格化答案)](https://api.chatanywhere.org/v1/oauth/free/render)
+## [获取ENNCY_KEY(言溪题库 用于题目为空时搜题)](https://tk.enncy.cn/)
 

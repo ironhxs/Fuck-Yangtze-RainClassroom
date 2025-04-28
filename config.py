@@ -38,12 +38,14 @@ config_file = read(config_file_name)
 isLocal = False
 
 sessionId = re.search(r'\"(.*?)\"', config_file[0]).group(1) if isLocal else os.environ["SESSION"]
-email_user = str(re.search(r'\"(.*?)\"', config_file[1]).group(1)) if isLocal else os.environ["EMAIL_USER"]
-email_pass = str(re.search(r'\"(.*?)\"', config_file[2]).group(1)) if isLocal else os.environ["EMAIL_PASS"]
-to_email = str(re.search(r'\"(.*?)\"', config_file[3]).group(1)) if isLocal else os.environ["TO_EMAIL"]
-email_host = str(re.search(r'\"(.*?)\"', config_file[4]).group(1)) if isLocal else os.environ["EMAIL_HOST"]
-email_port = int(re.search(r'\"(.*?)\"', config_file[5]).group(1)) if isLocal else os.environ["EMAIL_PORT"]
-ai_key = str(re.search(r'\"(.*?)\"', config_file[6]).group(1)) if isLocal else os.environ["AI_KEY"]
+# email_user = str(re.search(r'\"(.*?)\"', config_file[1]).group(1)) if isLocal else os.environ["EMAIL_USER"]
+# email_pass = str(re.search(r'\"(.*?)\"', config_file[2]).group(1)) if isLocal else os.environ["EMAIL_PASS"]
+# to_email = str(re.search(r'\"(.*?)\"', config_file[3]).group(1)) if isLocal else os.environ["TO_EMAIL"]
+# email_host = str(re.search(r'\"(.*?)\"', config_file[4]).group(1)) if isLocal else os.environ["EMAIL_HOST"]
+# email_port = int(re.search(r'\"(.*?)\"', config_file[5]).group(1)) if isLocal else os.environ["EMAIL_PORT"]
+ai_key = str(re.search(r'\"(.*?)\"', config_file[1]).group(1)) if isLocal else os.environ["AI_KEY"]
+enncy_key = str(re.search(r'\"(.*?)\"', config_file[2]).group(1)) if isLocal else os.environ["ENNCY_KEY"]
+
 
 headers = {
     "Cookie": "sessionid=" + sessionId

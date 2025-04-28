@@ -6,7 +6,7 @@ import websocket
 import json
 from config import host, api, headers, question_type
 from util.notice import email_notice
-from util.llm import request_ai
+from util.ai import request_ai
 from util.timestamp import get_date_time
 
 
@@ -48,7 +48,8 @@ def on_message_connect(ppt_jwt, lesson_id, identity_id, socket_jwt, sleep_second
                         problem_type=problem["type"],
                         problem_content=problem["content"],
                         options=problem["options"],
-                        jwt=ppt_jwt
+                        jwt=ppt_jwt,
+                        img_url=problem["img_url"]
                     )
                     # 移除回答完的问题
                     if q_id in problem_list:
@@ -90,6 +91,7 @@ def on_message_connect(ppt_jwt, lesson_id, identity_id, socket_jwt, sleep_second
                     for ppt in ppt_pages:
                         # 有答题
                         if "problem" in ppt:
+                            # print(ppt)
                             # 先保存所有题目，供索引，然后监听socket，对应的问题发送的瞬间进行answer
                             question = ppt["problem"]
                             options = None
@@ -100,7 +102,8 @@ def on_message_connect(ppt_jwt, lesson_id, identity_id, socket_jwt, sleep_second
                             save_dict = {
                                 "type": question["problemType"],
                                 "content": question["body"],
-                                "options": options
+                                "options": options,
+                                "img_url": ppt["coverAlt"]
                             }
                             print("保存题目", save_dict)
                             problem_list[question["problemId"]] = save_dict
@@ -176,14 +179,14 @@ def start_all_sockets(on_lesson_list):
 
 
 # 答题
-def answer(problem_id, problem_type, jwt, problem_content, options):
-    print(question_type[problem_type], problem_content, options)
+def answer(problem_id, problem_type, jwt, problem_content, options,img_url):
+    print(question_type[problem_type], problem_content, options,img_url)
 
     post_json = {
         "problemId": problem_id,
         "problemType": problem_type,
         "dt": get_date_time(),
-        "result": request_ai(type=question_type[problem_type], problem=problem_content, options=options)
+        "result": request_ai(type=question_type[problem_type], problem=problem_content, options=options,img_url=img_url)
     }
 
     new_headers = headers

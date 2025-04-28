@@ -2,6 +2,8 @@ import json
 
 from openai import OpenAI
 from config import ai_key
+from util.enncy import ocr_with_search, search
+from util.ocr import ocr_form_url_image
 
 ### 摘抄自一个学弟的第二课堂仓库AI部分
 ## https://github.com/tinyvan/SecondClass
@@ -41,12 +43,23 @@ def get_ans(text):
     return completion.choices[0].message.content
 
 
-def request_ai(type, problem, options):
+def request_ai(type, problem, options,img_url):
     LLM_init(ai_key)
-    response = get_ans(str({
+    send = {
         "type": type,
         "question": problem,
         "options": options
-    }))
+    }
+
+    if problem == "" :
+        print("题目文本为空 启用OCR图片识别搜题")
+        text = ocr_form_url_image(img_url)
+        print("OCR识别结果",text)
+        result = search(text)
+        print("搜题结果",result)
+        send["搜索到的题库答案"] = result
+        send["question"] = text
+
+    response = get_ans(str(send))
     print(response)
     return json.loads(response)["answer"]
