@@ -10,7 +10,7 @@ from util.ai import request_ai
 from util.timestamp import get_date_time
 
 
-def on_message_connect(ppt_jwt, lesson_id, identity_id, socket_jwt, sleep_second=5):
+def on_message_connect(ppt_jwt, lesson_id, identity_id, socket_jwt, sleep_second=10):
     problem_list = dict()
 
     def on_message(ws, message):
@@ -27,7 +27,8 @@ def on_message_connect(ppt_jwt, lesson_id, identity_id, socket_jwt, sleep_second
             # 最新的题目
             if len(time_lines) == 0:
                 # 没题可答，继续获取PPT内容，看看是否老师换了新的PPT文件
-                print("目前无题目，重新获取所有PPT")
+                print("目前无题目，休息片刻后重新获取PPT")
+                time.sleep(sleep_second)
                 auth_payload = {
                     "op": "hello",
                     "userid": identity_id,
@@ -111,7 +112,7 @@ def on_message_connect(ppt_jwt, lesson_id, identity_id, socket_jwt, sleep_second
                     print("错误", response.status_code, response.content)
             # 开始监听 定时发送
             # 这是发送一次
-            print("题目保存成功，进入监听状态")
+            print("题目保存成功，切换至监听状态")
             ws.send(json.dumps({
                 "op": "fetchtimeline",
                 "lessonid": str(lesson_id),

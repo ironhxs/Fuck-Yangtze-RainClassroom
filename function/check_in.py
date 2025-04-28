@@ -19,7 +19,7 @@ def get_listening():
 
 
 # 获取正在进行的课堂并且签到、写日志 新的签到方法
-def get_listening_classes_and_sign():
+def get_listening_classes_and_sign(filtered_courses: list):
     response = get_listening()
     name = get_user_name()
 
@@ -51,13 +51,20 @@ def get_listening_classes_and_sign():
                     # print(jwt)
                     identity_id = data["identityId"]
 
-                    on_lesson_list.append({
-                        "ppt_jwt": jwt,
-                        "socket_jwt" : socket_jwt,
-                        "lesson_id": lesson_id,
-                        "identity_id": identity_id,
-                        "course_name": course_name
-                    })
+                    def queue_on_listening_task():
+                        on_lesson_list.append({
+                            "ppt_jwt": jwt,
+                            "socket_jwt": socket_jwt,
+                            "lesson_id": lesson_id,
+                            "identity_id": identity_id,
+                            "course_name": course_name
+                        })
+
+                    if len(filtered_courses) == 0:  # 无需过滤 全部进入监听队列
+                        queue_on_listening_task()
+                    else:  # 只监听符合条件的课程 其余的就签到
+                        if course_name in filtered_courses:
+                            queue_on_listening_task()
 
                     # 将签到信息写入文件顶部
                     new_log = {
@@ -170,4 +177,3 @@ def check_in_on_latest(check_num=1):
             print("没有找到数据")
     else:
         print("请求失败:", response.status_code, response.text)
-

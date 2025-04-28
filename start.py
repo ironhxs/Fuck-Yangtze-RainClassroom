@@ -2,25 +2,8 @@ from function.check_in import get_listening_classes_and_sign, check_exam
 
 if __name__ == "__main__":
     # check_exam()
-    get_listening_classes_and_sign()
-
-
-# 测试题空时进行OCR搜题
-# request_ai(type="单选题",problem="",options=[
-#         {
-#           "key": "A",
-#           "value": ""
-#         },
-#         {
-#           "key": "B",
-#           "value": ""
-#         },
-#         {
-#           "key": "C",
-#           "value": ""
-#         },
-#         {
-#           "key": "D",
-#           "value": ""
-#         }
-#       ],img_url="https://qn-st0.yuketang.cn/Fn8KemG7VHD1cjIlYIjMJHMTSFEO?imageView2/2/w/1280/format/webp")
+    get_listening_classes_and_sign(filtered_courses=[
+        # 默认为空 所有课题监听课程测试
+        # 若填写课程名称 则只监听列表里的课，其余课仅签到,建议按自己需求添加
+        "计算机组成原理","数据结构"
+    ])
