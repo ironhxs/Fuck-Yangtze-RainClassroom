@@ -33,7 +33,7 @@ jobs:
 #            EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
 #            EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
             AI_KEY: ${{ secrets.AI_KEY }}
-            ENNCY_KEY: ${{ ENNCY_KEY }}
+            ENNCY_KEY: ${{ secrets.ENNCY_KEY }}
 
 
       - name: Commit and push changes
