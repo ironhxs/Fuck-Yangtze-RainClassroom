@@ -29,12 +29,13 @@
 3.继续在设置中，修改选项(为了写入日志)
 ![图片3](src/img/Step_3.png)
 
-3.去Action板块直接Run，测试是否通过
+
+4.再配置两个secret，AI_KEY和ENNCY_KEY，用于搜题答题，获取方式在末尾
+
+5.再配置一个secret，FILTERED_COURSES，用英文逗号隔开，不要有空格，填写需要一直监听答题的课程，为空则代表所有课程都监听
+
+6.去Action板块Run,观察运行结果，检查是否通过
 ![图片4](src/img/Step_4.png)
-
-4.查看日志log.json签到内容，如果已经签到过不再写入
-
-5.【新增】答题：增加secret，AI_KEY和ENNCY_KEY，获取方式在末尾
 
 ## 方法2 部署在服务器
 ### 🌟 说明
@@ -44,18 +45,27 @@
 ### 🚀 开始配置
 1.进入config.py，修改isLocal变量为True
 
-2.打开config.txt,填写config.ini
+2.填写config.ini
 
 3.安装依赖
 ```bash
 pip install -r requirements.txt
 ```
-3.定时运行start.py(推荐使用宝塔面板定时任务，具体教程自行搜索)
+
+4.配置config.py中
+```python
+filtered_courses=[
+        # 默认为空 所有课题监听课程测试
+        # 若填写课程名称 则只监听列表里的课，其余课仅签到,建议按自己需求添加
+        "计算机组成原理","数据结构"
+]
+```
+
+5.定时运行start.py(推荐使用宝塔面板定时任务，具体教程自行搜索)
 ```python
 python start.py
 ```
 
-4.查看日志log.json签到内容，如果已经签到过不再写入
 
 ## 获取SESSIONID方式
 

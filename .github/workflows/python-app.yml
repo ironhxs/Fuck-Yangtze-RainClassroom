@@ -39,6 +39,7 @@ jobs:
 #            EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
             AI_KEY: ${{ secrets.AI_KEY }}
             ENNCY_KEY: ${{ secrets.ENNCY_KEY }}
+            FILTERED_COURSES: ${{ secrets.FILTERED_COURSES }}
 
 
       - name: Commit and push changes
