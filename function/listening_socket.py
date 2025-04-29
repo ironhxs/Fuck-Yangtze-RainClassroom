@@ -99,15 +99,18 @@ def on_message_connect(ppt_jwt, lesson_id, identity_id, socket_jwt, sleep_second
                             q_type = question["problemType"]
                             if q_type == 1 or q_type == 2 or q_type == 3:
                                 options = question["options"]
-                            # 保存
-                            save_dict = {
-                                "type": question["problemType"],
-                                "content": question["body"],
-                                "options": options,
-                                "img_url": ppt["coverAlt"]
-                            }
-                            print("保存题目", save_dict)
-                            problem_list[question["problemId"]] = save_dict
+
+                            answered = list(ppt["problem"]["answers"])
+                            if len(answered) == 0: # 回答完的问题不入队
+                                # 保存
+                                save_dict = {
+                                    "type": question["problemType"],
+                                    "content": question["body"],
+                                    "options": options,
+                                    "img_url": ppt["coverAlt"]
+                                }
+                                print("保存题目", save_dict)
+                                problem_list[question["problemId"]] = save_dict
                 else:
                     print("错误", response.status_code, response.content)
             # 开始监听 定时发送
