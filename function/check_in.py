@@ -2,7 +2,7 @@ import requests
 
 from function.listening_socket import start_all_sockets
 from function.user import get_user_name
-from config import host, api, headers, log_file_name
+from config import host, api, headers, log_file_name,check_in_sources
 from util.file import write_log, read_log
 from util.notice import email_notice
 from util.timestamp import get_now
@@ -107,7 +107,7 @@ def check_exam():
 # 传入lessonId 签到
 def check_in_on_listening(lesson_id):
     sign_data = {
-        "source": 5,
+        "source": check_in_sources["二维码"],
         "lessonId": str(lesson_id),
         "joinIfNotIn": True
     }

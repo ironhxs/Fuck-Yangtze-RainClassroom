@@ -42,8 +42,8 @@ sessionId = re.search(r'\"(.*?)\"', config_file[0]).group(1) if isLocal else os.
 # to_email = str(re.search(r'\"(.*?)\"', config_file[3]).group(1)) if isLocal else os.environ["TO_EMAIL"]
 # email_host = str(re.search(r'\"(.*?)\"', config_file[4]).group(1)) if isLocal else os.environ["EMAIL_HOST"]
 # email_port = int(re.search(r'\"(.*?)\"', config_file[5]).group(1)) if isLocal else os.environ["EMAIL_PORT"]
-ai_key = str(re.search(r'\"(.*?)\"', config_file[1]).group(1)) if isLocal else os.getenv("AI_KEY","")
-enncy_key = str(re.search(r'\"(.*?)\"', config_file[2]).group(1)) if isLocal else os.getenv("ENNCY_KEY","")
+ai_key = str(re.search(r'\"(.*?)\"', config_file[1]).group(1)) if isLocal else os.getenv("AI_KEY", "")
+enncy_key = str(re.search(r'\"(.*?)\"', config_file[2]).group(1)) if isLocal else os.getenv("ENNCY_KEY", "")
 
 headers = {
     "Cookie": "sessionid=" + sessionId
@@ -55,6 +55,13 @@ question_type = {
     3: "投票题",
     4: "填空题",
     5: "主观题"
+}
+
+# 签到来源 二维码 APP 公众号 默认为二维码
+check_in_sources = {
+    "公众号": 5,
+    "二维码": 21,
+    "APP": 23
 }
 
 
