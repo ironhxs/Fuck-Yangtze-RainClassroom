@@ -31,10 +31,10 @@ def get_listening_classes_and_sign(filtered_courses: list):
     else:
         classes = list(response["onLessonClassrooms"])
         if len(classes) == 0:
-            print("无课")
+            print("\n无课")
             return
         else:
-            print("发现上课")
+            print("\n发现上课")
             for item in classes:
                 course_name = item["courseName"]
                 lesson_id = item["lessonId"]
