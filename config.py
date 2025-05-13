@@ -61,6 +61,7 @@ question_type = {
 check_in_sources = {
     "公众号": 5,
     "二维码": 21,
+    "暗号": 22,
     "APP": 23
 }
 
