@@ -520,5 +520,14 @@
         "student": "赵思涵",
         "status": "签到成功",
         "url": "https://changjiang.yuketang.cn/m/v2/lesson/student/1435234725647965440"
+    },
+    {
+        "id": "1435234725647965440",
+        "title": "数据结构",
+        "name": "数据结构",
+        "time": "2025-06-03 09:15:14",
+        "student": "赵思涵",
+        "status": "签到成功",
+        "url": "https://changjiang.yuketang.cn/m/v2/lesson/student/1435234725647965440"
     }
 ]
