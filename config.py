@@ -68,7 +68,7 @@ check_in_sources = {
 
 def get_filtered_courses_from_env():
     raw = os.getenv("FILTERED_COURSES", "")
-    return [.strip() for in raw.split(",") if .strip()]
+    return [s.strip() forin raw.split(",") if s.strip()]
 
 
 if isLocal:
