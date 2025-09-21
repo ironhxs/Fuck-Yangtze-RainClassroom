@@ -68,14 +68,14 @@ check_in_sources = {
 
 def get_filtered_courses_from_env():
     raw = os.getenv("FILTERED_COURSES", "")
-    return [s.strip() for in raw.split(",") if s.strip()]
+    return [.strip() forin raw.split(",") if .strip()]
 
 
 if isLocal:
     filtered_courses = [
         # 默认为空 所有课题监听课程测试
         # 若填写课程名称 则只监听列表里的课，其余课仅签到,建议按自己需求添加
-        "英语国家社会与文化"
+        "计算机组成原理", "数据结构", "牢大"
     ]
 else:
     filtered_courses = get_filtered_courses_from_env()
